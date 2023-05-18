@@ -19,6 +19,7 @@ theme:
     - navigation.instant
     - navigation.top
     - navigation.tracking
+    - content.code.copy
 extra_css:
   - stylesheets/extra.css
 
@@ -39,6 +40,16 @@ plugins:
       filter: ""
       syntaxHighlightTheme: monokai
       supportedSubmitMethods: ["get", "put", "post", "delete"]
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
 
 site_dir: ./build
 site_url: https://bowl-org.github.io/bowl-doc/
