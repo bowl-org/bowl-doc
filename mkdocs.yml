@@ -1,0 +1,45 @@
+site_name: Bowl Chat
+theme:
+  name: material
+  logo: assets/favicon.ico
+  favicon: assets/favicon.ico
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+      primary: custom
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+      # primary: custom
+  features:
+    - navigation.indexes
+    - navigation.instant
+    - navigation.top
+    - navigation.tracking
+extra_css:
+  - stylesheets/extra.css
+
+docs_dir: ./docs
+extra:
+  # Support the dev :)
+  generator: true
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/bowl-org
+copyright: Copyright &copy; 2023 Mehmet Ümit Özden
+nav:
+  - Socket Events API : events.md
+  - REST API: REST.md
+plugins:
+  - swagger-ui-tag:
+      docExpansion: none
+      filter: ""
+      syntaxHighlightTheme: monokai
+      supportedSubmitMethods: ["get", "put", "post", "delete"]
+
+site_dir: ./build
+site_url: https://bowl-org.github.io/bowl-doc/
+repo_url: https://github.com/bowl-org/bowl-doc
