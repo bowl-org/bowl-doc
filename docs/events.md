@@ -1,54 +1,139 @@
 # Socket Events API
 ## **Event Handlers**
 ### **``onlineChats``**
-Online chats of current user
-```json title="RESPONSE"
+Online chats of connected user.
+```js title="RECEIVED PACKET"
 {
-    contacts: ["bowl@example.com", "bowl2@example.com"],
-    groups: [//TODO]
+    contacts: ["bowl@example.com", "bowl2@example.com"...],
+    groups: [
+        {
+            groupUID: "12 byte unique group id1",
+            persons: ["bowl2@example.com", "bowl3@example.com"...]
+        },
+        {
+            groupUID: "12 byte unique group id2",
+            persons: ["bowl@example.com", "bowl4@example.com"...]
+        }
+        ...
+    ]
 }
 ```
-### **``chatMessage``**
-Message packet that received from contact
-```json title="RESPONSE"
+### **``contactChatMessage``**
+Message packet that received from contact. Message has to be decrypted using private key of connected user.
+```json title="RECEIVED PACKET"
 {
     messageType: <Any>,
-    message: "This is received message. It might be encrypted message too",
+    message: "This received contact message is encrypted",
+    date: "DD/MM/YY",
+    time: "16:24",
+    from: "bowl@example.com"
+}
+```
+### **``groupChatMessage``**
+Message packet that received from group. Message has to be decrypted using group key.
+```json title="RECEIVED PACKET"
+{
+    groupUID: "12 byte unique group id.",
+    messageType: <Any>,
+    message: "This received group message is encrypted",
     date: "DD/MM/YY",
     time: "16:24",
     from: "bowl@example.com"
 }
 ```
 ### **``connect_error``**
-Socker error handling
-```json title="RESPONSE"
+Socker error handling.
+```json title="RECEIVED PACKET"
 Object(Error)
 ```
 ### **``online``**
- User become online
-```json title="RESPONSE"
+Person become online.
+```json title="RECEIVED PACKET"
 {
     email: "bowl@example.com"
 }
 ```
 ### **``offline``**
- User become offline
-```json title="RESPONSE"
+Person become offline.
+```json title="RECEIVED PACKET"
 {
     email: "bowl@example.com"
 }
 ```
 ### **``contactRequestReceived``**
-Contact request packet that received from contact
-```js title="RESPONSE"
+Received contact request packet.
+```js title="RECEIVED PACKET"
 {
     name: "Bowl",
     email: "bowl@example.com",
     publicKey: Base64(PublicKey(type: "spki", format: "der"))
 }
 ```
+### **``groupRequestReceived``**
+Received group request packet. Encrypted group key has to be decrypted using private key of connected user. Decrypted group key format is AES256.
+```js title="RECEIVED PACKET"
+{
+    name: "The Bowl Group",
+    description: "This is description of group.",
+    groupUID: "12 byte unique group id.",
+    encryptedGroupKey: "This is encrypted group key that encrypted with public key of connected user"
+}
+```
 ## **Event Emitters**
+### **``contactChatMessage``**
+Send encrypted chat message to contact. Message has to be encrypted using public key of contact.
+=== "SEND"
+    ``` js title="SEND"
+    {
+        date: "DD/MM/YYYY",
+        time: "01:23",
+        messageType: <Any>,
+        message: "This sent contact message is encrypted",
+        to: "bowl@example.com"
+    }
+    ```
+=== "OK"
+    ``` json title="RECEIVED PACKET"
+    {
+        status: "OK"
+    }
+    ```
+=== "ERROR"
+
+    ```json title="RECEIVED PACKET"
+    {
+        status: "ERROR",
+        error: "This is error message"
+    }
+    ```
+### **``groupChatMessage``**
+Send encrypted chat message to group. Message has to be encrypted using group key.
+=== "SEND"
+    ``` js title="SEND"
+    {
+        groupUID: "12 byte unique group id.",
+        date: "DD/MM/YYYY",
+        time: "01:23",
+        messageType: <Any>,
+        message: "This sent group message is encrypted",
+    }
+    ```
+=== "OK"
+    ``` json title="RECEIVED PACKET"
+    {
+        status: "OK"
+    }
+    ```
+=== "ERROR"
+
+    ```json title="RECEIVED PACKET"
+    {
+        status: "ERROR",
+        error: "This is error message"
+    }
+    ```
 ### **``acceptContactRequest``**
+Accept contact request that received.
 === "SEND"
     ``` json title="SEND"
     {
@@ -56,19 +141,20 @@ Contact request packet that received from contact
     }
     ```
 === "OK"
-    ``` json title="RESPONSE"
+    ``` json title="RECEIVED PACKET"
     {
         status: "OK"
     }
     ```
 === "ERROR"
-    ```json title="RESPONSE"
+    ```json title="RECEIVED PACKET"
     {
         status: "ERROR",
         error: "This is error message"
     }
     ```
 ### **``declineContactRequest``**
+Decline contact request that received.
 === "SEND"
     ``` json title="SEND"
     {
@@ -76,19 +162,20 @@ Contact request packet that received from contact
     }
     ```
 === "OK"
-    ``` json title="RESPONSE"
+    ``` json title="RECEIVED PACKET"
     {
         status: "OK"
     }
     ```
 === "ERROR"
-    ```json title="RESPONSE"
+    ```json title="RECEIVED PACKET"
     {
         status: "ERROR",
         error: "This is error message"
     }
     ```
 ### **``sendContactRequest``**
+Send contact request to person.
 === "SEND"
     ``` json title="SEND"
     {
@@ -96,7 +183,7 @@ Contact request packet that received from contact
     }
     ```
 === "OK"
-    ``` js title="RESPONSE"
+    ``` js title="RECEIVED PACKET"
     {
         status: "OK",
         contactData: {
@@ -108,32 +195,78 @@ Contact request packet that received from contact
     ```
 === "ERROR"
 
-    ```json title="RESPONSE"
+    ```json title="RECEIVED PACKET"
     {
         status: "ERROR",
         error: "This is error message"
     }
     ```
-### **``chatMessage``**
+### **``acceptGroupRequest``**
+Accept group request that received.
 === "SEND"
-    ``` js title="SEND"
+    ``` json title="SEND"
     {
-        date: "DD/MM/YYYY",
-        time: "01:23",
-        messageType: <Any>,
-        message: "This is message to send. It might be encrypted message too",
-        to: "bowl@example.com"
+        groupUID: "12 byte unique group id."
     }
     ```
 === "OK"
-    ``` json title="RESPONSE"
+    ``` json title="RECEIVED PACKET"
     {
         status: "OK"
     }
     ```
 === "ERROR"
+    ```json title="RECEIVED PACKET"
+    {
+        status: "ERROR",
+        error: "This is error message"
+    }
+    ```
+### **``declineGroupRequest``**
+Decline group request that received.
+=== "SEND"
+    ``` json title="SEND"
+    {
+        groupUID: "12 byte unique group id."
+    }
+    ```
+=== "OK"
+    ``` json title="RECEIVED PACKET"
+    {
+        status: "OK"
+    }
+    ```
+=== "ERROR"
+    ```json title="RECEIVED PACKET"
+    {
+        status: "ERROR",
+        error: "This is error message"
+    }
+    ```
+### **``sendGroupRequest``**
+Send group request to person. Group key has to be encrypted using public key of person. In order to encrypt key connected user needs to get public key of person.
+=== "SEND"
+    ``` json title="SEND"
+    {
+        groupUID: "12 byte unique group id."
+        encryptedGroupKey: "This is encrypted group key that encrypted with public key of target user",
+        email:"bowl@example.com"
+    }
+    ```
+=== "OK"
+    ``` js title="RECEIVED PACKET"
+    {
+        status: "OK",
+        personData: {
+            name: "Contact Name",
+            email: "bowl@example.com",
+            publicKey: Base64(PublicKey(type: "spki", format: "der"))
+        }
+    }
+    ```
+=== "ERROR"
 
-    ```json title="RESPONSE"
+    ```json title="RECEIVED PACKET"
     {
         status: "ERROR",
         error: "This is error message"
