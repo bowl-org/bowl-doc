@@ -220,9 +220,30 @@ Accept group request that received.
     }
     ```
 === "OK"
-    ``` json title="RECEIVED PACKET"
+    ``` js title="RECEIVED PACKET"
     {
         status: "OK"
+        members: [
+            {
+                name: "Bowl",
+                email: "bowl@example.com",
+                publicKey: Base64(PublicKey(type: "spki", format: "der")),
+                isAdmin: True
+            },
+            {
+                name: "Bowl2",
+                email: "bowl2@example.com",
+                publicKey: Base64(PublicKey(type: "spki", format: "der")),
+                isAdmin: false
+            },
+            {
+                name: "Bowl3",
+                email: "bowl3@example.com",
+                publicKey: Base64(PublicKey(type: "spki", format: "der")),
+                isAdmin: true
+            }
+            ...
+        ]
     }
     ```
 === "ERROR"
