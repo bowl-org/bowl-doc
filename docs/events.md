@@ -7,11 +7,11 @@ Online chats of connected user.
     contacts: ["bowl@example.com", "bowl2@example.com"...],
     groups: [
         {
-            groupUID: "12 byte unique group id1",
+            groupId: "12 byte unique group id1",
             persons: ["bowl2@example.com", "bowl3@example.com"...]
         },
         {
-            groupUID: "12 byte unique group id2",
+            groupId: "12 byte unique group id2",
             persons: ["bowl@example.com", "bowl4@example.com"...]
         }
         ...
@@ -33,7 +33,7 @@ Message packet that received from contact. Message has to be decrypted using pri
 Message packet that received from group. Message has to be decrypted using group key.
 ```json title="RECEIVED PACKET"
 {
-    groupUID: "12 byte unique group id.",
+    groupId: "12 byte unique group id.",
     messageType: <Any>,
     message: "This received group message is encrypted",
     date: "DD/MM/YY",
@@ -75,7 +75,7 @@ Received group request packet. Encrypted group key has to be decrypted using pri
 {
     name: "The Bowl Group",
     description: "This is description of group.",
-    groupUID: "12 byte unique group id.",
+    groupId: "12 byte unique group id.",
     encryptedGroupKey: "This is encrypted group key that encrypted with public key of connected user"
 }
 ```
@@ -111,7 +111,7 @@ Send encrypted chat message to group. Message has to be encrypted using group ke
 === "SEND"
     ``` js title="SEND"
     {
-        groupUID: "12 byte unique group id.",
+        groupId: "12 byte unique group id.",
         date: "DD/MM/YYYY",
         time: "01:23",
         messageType: <Any>,
@@ -206,7 +206,7 @@ Accept group request that received.
 === "SEND"
     ``` json title="SEND"
     {
-        groupUID: "12 byte unique group id."
+        groupId: "12 byte unique group id."
     }
     ```
 === "OK"
@@ -227,7 +227,7 @@ Decline group request that received.
 === "SEND"
     ``` json title="SEND"
     {
-        groupUID: "12 byte unique group id."
+        groupId: "12 byte unique group id."
     }
     ```
 === "OK"
@@ -248,7 +248,7 @@ Send group request to person. Group key has to be encrypted using public key of 
 === "SEND"
     ``` json title="SEND"
     {
-        groupUID: "12 byte unique group id."
+        groupId: "12 byte unique group id."
         encryptedGroupKey: "This is encrypted group key that encrypted with public key of target user",
         email:"bowl@example.com"
     }
