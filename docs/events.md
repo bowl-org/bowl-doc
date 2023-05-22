@@ -79,6 +79,16 @@ Received group request packet. Encrypted group key has to be decrypted using pri
     encryptedGroupKey: "This is encrypted group key that encrypted with public key of connected user"
 }
 ```
+### **``newGroupMember``**
+Received new group member packet.
+```js title="RECEIVED PACKET"
+{
+    groupId: "12 byte unique group id.",
+    name: "Member",
+    email: "bowl@example.com",
+    publicKey: Base64(PublicKey(type: "spki", format: "der"))
+}
+```
 ## **Event Emitters**
 ### **``contactChatMessage``**
 Send encrypted chat message to contact. Message has to be encrypted using public key of contact.
@@ -258,7 +268,7 @@ Send group request to person. Group key has to be encrypted using public key of 
     {
         status: "OK",
         personData: {
-            name: "Contact Name",
+            name: "Member Name",
             email: "bowl@example.com",
             publicKey: Base64(PublicKey(type: "spki", format: "der"))
         }
