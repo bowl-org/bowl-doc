@@ -288,11 +288,6 @@ Send group request to person. Group key has to be encrypted using public key of 
     ``` js title="RECEIVED PACKET"
     {
         status: "OK",
-        personData: {
-            name: "Member Name",
-            email: "bowl@example.com",
-            publicKey: Base64(PublicKey(type: "spki", format: "der"))
-        }
     }
     ```
 === "ERROR"
