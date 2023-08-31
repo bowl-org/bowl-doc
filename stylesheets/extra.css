@@ -1,0 +1,13 @@
+[data-md-color-scheme='default'] {
+    --md-primary-fg-color: #2c1f2a;
+}
+[data-md-color-scheme='slate'] {
+    --md-primary-fg-color: #2c1f2a;
+}
+.md-footer-meta, .md-footer {
+    background-color: #2c1f2a;
+}
+/* .swagger-ui, .swagger-ui .scheme-container{ */
+/*     padding: 1rem; */
+/*     background-color: #2c1f2a; */
+/* } */
